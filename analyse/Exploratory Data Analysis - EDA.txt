@@ -1,0 +1,1999 @@
+# Exploratory Data Analysis - Projet Stations 5G (Training datas only)
+
+## 1. Importation des Librairies
+
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os
+
+pd.set_option('display.max_columns', 100)
+pd.set_option('display.width', 1000)
+sns.set_style('whitegrid')
+plt.rcParams['figure.figsize'] = (12, 6)
+
+print("Librairies importées.")
+```
+
+    Librairies importées.
+    
+
+## 2. Chargement des Données
+
+
+```python
+csv_file_path = 'train_processed.csv'
+
+if not os.path.exists(csv_file_path):
+    print(f"ERREUR : Le fichier {csv_file_path} n'a pas été trouvé.")
+    raise FileNotFoundError(f"Le fichier {csv_file_path} est introuvable.")
+else:
+    print(f"Chargement du fichier : {csv_file_path}")
+    df_train = pd.read_csv(csv_file_path, low_memory=False)
+    print("Chargement terminé.")
+```
+
+    Chargement du fichier : train_processed.csv
+    Chargement terminé.
+    
+
+## 3. Informations Générales sur le Dataset
+
+
+```python
+if 'df_train' in locals():
+    print(f"Dimensions du DataFrame (lignes, colonnes) : {df_train.shape}")
+
+    print("\nTypes de données et informations sur les colonnes :")
+    df_train.info()
+
+    print("\nStatistiques sur les valeurs manquantes par colonne (Top 5) :")
+    missing_values = df_train.isnull().sum()
+    missing_values = missing_values[missing_values > 0]
+    if missing_values.empty:
+        print("Aucune valeur manquante détectée. C'est une bonne nouvelle !")
+    else:
+        print(missing_values.sort_values(ascending=False).head())
+
+    print("\nAperçu des 5 premières lignes :")
+    display(df_train.head())
+
+else:
+    print("Le DataFrame df_train n'a pas été chargé correctement.")
+```
+
+    Dimensions du DataFrame (lignes, colonnes) : (1491, 3458)
+    
+    Types de données et informations sur les colonnes :
+    <class 'pandas.core.frame.DataFrame'>
+    RangeIndex: 1491 entries, 0 to 1490
+    Columns: 3458 entries, ID to f_3455
+    dtypes: float64(3456), int64(2)
+    memory usage: 39.3 MB
+    
+    Statistiques sur les valeurs manquantes par colonne (Top 5) :
+    Aucune valeur manquante détectée. C'est une bonne nouvelle !
+    
+    Aperçu des 5 premières lignes :
+    
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>target</th>
+      <th>f_0</th>
+      <th>f_1</th>
+      <th>f_2</th>
+      <th>f_3</th>
+      <th>f_4</th>
+      <th>f_5</th>
+      <th>f_6</th>
+      <th>f_7</th>
+      <th>f_8</th>
+      <th>f_9</th>
+      <th>f_10</th>
+      <th>f_11</th>
+      <th>f_12</th>
+      <th>f_13</th>
+      <th>f_14</th>
+      <th>f_15</th>
+      <th>f_16</th>
+      <th>f_17</th>
+      <th>f_18</th>
+      <th>f_19</th>
+      <th>f_20</th>
+      <th>f_21</th>
+      <th>f_22</th>
+      <th>f_23</th>
+      <th>f_24</th>
+      <th>f_25</th>
+      <th>f_26</th>
+      <th>f_27</th>
+      <th>f_28</th>
+      <th>f_29</th>
+      <th>f_30</th>
+      <th>f_31</th>
+      <th>f_32</th>
+      <th>f_33</th>
+      <th>f_34</th>
+      <th>f_35</th>
+      <th>f_36</th>
+      <th>f_37</th>
+      <th>f_38</th>
+      <th>f_39</th>
+      <th>f_40</th>
+      <th>f_41</th>
+      <th>f_42</th>
+      <th>f_43</th>
+      <th>f_44</th>
+      <th>f_45</th>
+      <th>f_46</th>
+      <th>f_47</th>
+      <th>...</th>
+      <th>f_3406</th>
+      <th>f_3407</th>
+      <th>f_3408</th>
+      <th>f_3409</th>
+      <th>f_3410</th>
+      <th>f_3411</th>
+      <th>f_3412</th>
+      <th>f_3413</th>
+      <th>f_3414</th>
+      <th>f_3415</th>
+      <th>f_3416</th>
+      <th>f_3417</th>
+      <th>f_3418</th>
+      <th>f_3419</th>
+      <th>f_3420</th>
+      <th>f_3421</th>
+      <th>f_3422</th>
+      <th>f_3423</th>
+      <th>f_3424</th>
+      <th>f_3425</th>
+      <th>f_3426</th>
+      <th>f_3427</th>
+      <th>f_3428</th>
+      <th>f_3429</th>
+      <th>f_3430</th>
+      <th>f_3431</th>
+      <th>f_3432</th>
+      <th>f_3433</th>
+      <th>f_3434</th>
+      <th>f_3435</th>
+      <th>f_3436</th>
+      <th>f_3437</th>
+      <th>f_3438</th>
+      <th>f_3439</th>
+      <th>f_3440</th>
+      <th>f_3441</th>
+      <th>f_3442</th>
+      <th>f_3443</th>
+      <th>f_3444</th>
+      <th>f_3445</th>
+      <th>f_3446</th>
+      <th>f_3447</th>
+      <th>f_3448</th>
+      <th>f_3449</th>
+      <th>f_3450</th>
+      <th>f_3451</th>
+      <th>f_3452</th>
+      <th>f_3453</th>
+      <th>f_3454</th>
+      <th>f_3455</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>-42.948462</td>
+      <td>-34.199885</td>
+      <td>-30.691196</td>
+      <td>-45.281565</td>
+      <td>-27.159948</td>
+      <td>-37.036769</td>
+      <td>-27.196869</td>
+      <td>-46.880042</td>
+      <td>-55.278376</td>
+      <td>-40.201860</td>
+      <td>-39.392719</td>
+      <td>-45.085894</td>
+      <td>-38.800015</td>
+      <td>-43.901099</td>
+      <td>-28.102497</td>
+      <td>-46.089221</td>
+      <td>-36.717136</td>
+      <td>-26.544630</td>
+      <td>-45.433189</td>
+      <td>-41.717226</td>
+      <td>-20.013706</td>
+      <td>-38.856322</td>
+      <td>-33.748465</td>
+      <td>-41.942007</td>
+      <td>-55.787125</td>
+      <td>-33.833808</td>
+      <td>-37.818297</td>
+      <td>-44.236771</td>
+      <td>-45.384903</td>
+      <td>-43.324116</td>
+      <td>-32.739081</td>
+      <td>-42.467967</td>
+      <td>-39.173975</td>
+      <td>-34.683815</td>
+      <td>-29.792184</td>
+      <td>-23.035070</td>
+      <td>-36.334178</td>
+      <td>-41.770634</td>
+      <td>-38.441014</td>
+      <td>-52.025438</td>
+      <td>-50.872145</td>
+      <td>-38.329127</td>
+      <td>-45.506854</td>
+      <td>-39.257242</td>
+      <td>-52.766304</td>
+      <td>-43.478831</td>
+      <td>-31.546480</td>
+      <td>-45.919463</td>
+      <td>...</td>
+      <td>-32.996104</td>
+      <td>-40.592587</td>
+      <td>-49.275465</td>
+      <td>-32.220619</td>
+      <td>-31.864732</td>
+      <td>-35.843362</td>
+      <td>-38.054934</td>
+      <td>-26.001449</td>
+      <td>-30.307115</td>
+      <td>-45.813075</td>
+      <td>-44.657663</td>
+      <td>-35.511655</td>
+      <td>-43.658579</td>
+      <td>-43.802738</td>
+      <td>-28.170504</td>
+      <td>-30.812015</td>
+      <td>-34.807780</td>
+      <td>-44.704120</td>
+      <td>-51.158576</td>
+      <td>-32.916230</td>
+      <td>-39.655832</td>
+      <td>-46.230357</td>
+      <td>-35.288231</td>
+      <td>-33.483597</td>
+      <td>-34.757500</td>
+      <td>-46.669562</td>
+      <td>-39.484521</td>
+      <td>-38.076499</td>
+      <td>-42.497011</td>
+      <td>-36.779481</td>
+      <td>-35.175179</td>
+      <td>-38.855541</td>
+      <td>-37.768265</td>
+      <td>-45.878381</td>
+      <td>-44.602316</td>
+      <td>-29.094071</td>
+      <td>-39.390380</td>
+      <td>-38.895636</td>
+      <td>-33.707665</td>
+      <td>-29.672009</td>
+      <td>-34.872647</td>
+      <td>-45.630532</td>
+      <td>-46.503523</td>
+      <td>-41.990423</td>
+      <td>-22.166269</td>
+      <td>-47.075403</td>
+      <td>-40.998002</td>
+      <td>-31.319097</td>
+      <td>-36.972738</td>
+      <td>-36.311521</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>0</td>
+      <td>-29.737236</td>
+      <td>-25.753736</td>
+      <td>-37.949008</td>
+      <td>-48.141273</td>
+      <td>-34.831778</td>
+      <td>-41.446983</td>
+      <td>-38.129590</td>
+      <td>-44.418079</td>
+      <td>-55.591961</td>
+      <td>-31.067240</td>
+      <td>-37.614454</td>
+      <td>-34.016562</td>
+      <td>-44.836586</td>
+      <td>-51.669510</td>
+      <td>-35.041048</td>
+      <td>-45.922877</td>
+      <td>-21.308929</td>
+      <td>-13.546422</td>
+      <td>-46.406436</td>
+      <td>-36.647787</td>
+      <td>-32.122264</td>
+      <td>-34.646020</td>
+      <td>-43.167117</td>
+      <td>-49.664442</td>
+      <td>-43.568353</td>
+      <td>-30.256607</td>
+      <td>-36.510094</td>
+      <td>-49.395159</td>
+      <td>-46.148288</td>
+      <td>-34.905118</td>
+      <td>-35.891805</td>
+      <td>-56.937806</td>
+      <td>-20.051780</td>
+      <td>-30.903364</td>
+      <td>-44.596129</td>
+      <td>-45.295145</td>
+      <td>-32.865445</td>
+      <td>-39.831034</td>
+      <td>-39.148193</td>
+      <td>-49.090025</td>
+      <td>-38.089672</td>
+      <td>-38.306726</td>
+      <td>-38.958764</td>
+      <td>-28.450137</td>
+      <td>-50.767379</td>
+      <td>-34.412613</td>
+      <td>-25.481009</td>
+      <td>-47.625401</td>
+      <td>...</td>
+      <td>-44.250772</td>
+      <td>-49.568576</td>
+      <td>-36.542508</td>
+      <td>-25.590115</td>
+      <td>-41.203034</td>
+      <td>-49.174883</td>
+      <td>-28.295419</td>
+      <td>-24.160708</td>
+      <td>-23.419595</td>
+      <td>-36.602787</td>
+      <td>-28.787370</td>
+      <td>-36.937602</td>
+      <td>-42.053789</td>
+      <td>-47.692037</td>
+      <td>-29.022920</td>
+      <td>-39.690255</td>
+      <td>-33.491942</td>
+      <td>-47.154865</td>
+      <td>-42.460258</td>
+      <td>-17.408557</td>
+      <td>-37.175402</td>
+      <td>-38.088484</td>
+      <td>-27.871710</td>
+      <td>-37.622523</td>
+      <td>-26.254888</td>
+      <td>-43.304304</td>
+      <td>-35.391012</td>
+      <td>-34.082827</td>
+      <td>-36.521236</td>
+      <td>-41.795162</td>
+      <td>-23.859032</td>
+      <td>-36.994081</td>
+      <td>-37.861851</td>
+      <td>-35.919048</td>
+      <td>-44.148634</td>
+      <td>-16.567998</td>
+      <td>-44.461422</td>
+      <td>-40.465099</td>
+      <td>-30.444872</td>
+      <td>-20.902573</td>
+      <td>-33.427772</td>
+      <td>-47.477845</td>
+      <td>-37.455443</td>
+      <td>-43.099366</td>
+      <td>-34.458101</td>
+      <td>-39.223231</td>
+      <td>-33.408899</td>
+      <td>-45.655739</td>
+      <td>-34.308090</td>
+      <td>-46.509676</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10</td>
+      <td>2</td>
+      <td>-28.809412</td>
+      <td>-21.332285</td>
+      <td>-44.010719</td>
+      <td>-48.457581</td>
+      <td>-50.332964</td>
+      <td>-37.401645</td>
+      <td>-47.338483</td>
+      <td>-51.549376</td>
+      <td>-44.177276</td>
+      <td>-40.349714</td>
+      <td>-48.311229</td>
+      <td>-39.048489</td>
+      <td>-41.850367</td>
+      <td>-45.010990</td>
+      <td>-39.969489</td>
+      <td>-53.233791</td>
+      <td>-42.352313</td>
+      <td>-43.903180</td>
+      <td>-43.555372</td>
+      <td>-56.214030</td>
+      <td>-48.886974</td>
+      <td>-42.188256</td>
+      <td>-45.851745</td>
+      <td>-56.665933</td>
+      <td>-43.905827</td>
+      <td>-43.615804</td>
+      <td>-47.827701</td>
+      <td>-54.373965</td>
+      <td>-44.751014</td>
+      <td>-32.652012</td>
+      <td>-44.295653</td>
+      <td>-48.017058</td>
+      <td>-36.045659</td>
+      <td>-36.624213</td>
+      <td>-49.626134</td>
+      <td>-51.083474</td>
+      <td>-45.586482</td>
+      <td>-41.072333</td>
+      <td>-36.003721</td>
+      <td>-50.034158</td>
+      <td>-40.154274</td>
+      <td>-17.123689</td>
+      <td>-52.236723</td>
+      <td>-48.511556</td>
+      <td>-40.176593</td>
+      <td>-42.944327</td>
+      <td>-51.667678</td>
+      <td>-47.406887</td>
+      <td>...</td>
+      <td>-36.774463</td>
+      <td>-50.742927</td>
+      <td>-32.637539</td>
+      <td>-47.434498</td>
+      <td>-50.605755</td>
+      <td>-28.507524</td>
+      <td>-48.232778</td>
+      <td>-35.888323</td>
+      <td>-39.334007</td>
+      <td>-53.869630</td>
+      <td>-43.459088</td>
+      <td>-42.492358</td>
+      <td>-51.961694</td>
+      <td>-53.717068</td>
+      <td>-44.743803</td>
+      <td>-46.861877</td>
+      <td>-45.340268</td>
+      <td>-50.708431</td>
+      <td>-34.208096</td>
+      <td>-45.379720</td>
+      <td>-45.657903</td>
+      <td>-46.173897</td>
+      <td>-39.475525</td>
+      <td>-38.413707</td>
+      <td>-45.760062</td>
+      <td>-44.481514</td>
+      <td>-43.288255</td>
+      <td>-44.180491</td>
+      <td>-51.735069</td>
+      <td>-50.312729</td>
+      <td>-45.586694</td>
+      <td>-37.176245</td>
+      <td>-44.711646</td>
+      <td>-52.578462</td>
+      <td>-36.210232</td>
+      <td>-50.399758</td>
+      <td>-50.274131</td>
+      <td>-54.305526</td>
+      <td>-49.887876</td>
+      <td>-39.840966</td>
+      <td>-55.879599</td>
+      <td>-60.160620</td>
+      <td>-47.124255</td>
+      <td>-43.495131</td>
+      <td>-50.089404</td>
+      <td>-24.245044</td>
+      <td>-41.121011</td>
+      <td>-39.685115</td>
+      <td>-51.886279</td>
+      <td>-49.112773</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>100</td>
+      <td>0</td>
+      <td>-24.033439</td>
+      <td>-37.224449</td>
+      <td>-41.048676</td>
+      <td>-45.728247</td>
+      <td>-27.487252</td>
+      <td>-34.885894</td>
+      <td>-41.107078</td>
+      <td>-48.399470</td>
+      <td>-53.953887</td>
+      <td>-45.467289</td>
+      <td>-42.767725</td>
+      <td>-49.500397</td>
+      <td>-55.327347</td>
+      <td>-39.764258</td>
+      <td>-34.802546</td>
+      <td>-50.697169</td>
+      <td>-38.125043</td>
+      <td>-22.199748</td>
+      <td>-42.103974</td>
+      <td>-49.025598</td>
+      <td>-30.396110</td>
+      <td>-33.933871</td>
+      <td>-42.550144</td>
+      <td>-58.327873</td>
+      <td>-39.237859</td>
+      <td>-45.743741</td>
+      <td>-35.397344</td>
+      <td>-42.637444</td>
+      <td>-53.463611</td>
+      <td>-48.843014</td>
+      <td>-31.498856</td>
+      <td>-53.030065</td>
+      <td>-46.592059</td>
+      <td>-27.637036</td>
+      <td>-42.339088</td>
+      <td>-49.574316</td>
+      <td>-38.277063</td>
+      <td>-39.652018</td>
+      <td>-43.560710</td>
+      <td>-41.765393</td>
+      <td>-49.437089</td>
+      <td>-35.815495</td>
+      <td>-32.640356</td>
+      <td>-40.779813</td>
+      <td>-52.285044</td>
+      <td>-46.615000</td>
+      <td>-41.789141</td>
+      <td>-53.193429</td>
+      <td>...</td>
+      <td>-36.581820</td>
+      <td>-40.429786</td>
+      <td>-49.490426</td>
+      <td>-29.295966</td>
+      <td>-39.915354</td>
+      <td>-46.013765</td>
+      <td>-30.752156</td>
+      <td>-28.053617</td>
+      <td>-36.981428</td>
+      <td>-54.568410</td>
+      <td>-47.909596</td>
+      <td>-41.168516</td>
+      <td>-37.606332</td>
+      <td>-45.906792</td>
+      <td>-36.970057</td>
+      <td>-41.658761</td>
+      <td>-43.324254</td>
+      <td>-46.342852</td>
+      <td>-48.659987</td>
+      <td>-33.554606</td>
+      <td>-33.187096</td>
+      <td>-49.957411</td>
+      <td>-32.683279</td>
+      <td>-33.114339</td>
+      <td>-31.876911</td>
+      <td>-44.292076</td>
+      <td>-43.590438</td>
+      <td>-32.158488</td>
+      <td>-41.498111</td>
+      <td>-54.294855</td>
+      <td>-34.978603</td>
+      <td>-39.353391</td>
+      <td>-45.112616</td>
+      <td>-51.323227</td>
+      <td>-44.065088</td>
+      <td>-26.848127</td>
+      <td>-37.441041</td>
+      <td>-46.265200</td>
+      <td>-27.036962</td>
+      <td>-28.765079</td>
+      <td>-34.428353</td>
+      <td>-49.856612</td>
+      <td>-43.032160</td>
+      <td>-41.680856</td>
+      <td>-34.431173</td>
+      <td>-50.494343</td>
+      <td>-39.497791</td>
+      <td>-42.162237</td>
+      <td>-36.966411</td>
+      <td>-46.450608</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1000</td>
+      <td>0</td>
+      <td>-43.919513</td>
+      <td>-33.837200</td>
+      <td>-47.267240</td>
+      <td>-45.747744</td>
+      <td>-24.110065</td>
+      <td>-29.391231</td>
+      <td>-41.163233</td>
+      <td>-55.365235</td>
+      <td>-46.292337</td>
+      <td>-29.558789</td>
+      <td>-48.724417</td>
+      <td>-38.079691</td>
+      <td>-38.915900</td>
+      <td>-43.709418</td>
+      <td>-39.071380</td>
+      <td>-56.449503</td>
+      <td>-36.995920</td>
+      <td>-32.213695</td>
+      <td>-39.052133</td>
+      <td>-42.148502</td>
+      <td>-24.913641</td>
+      <td>-41.521707</td>
+      <td>-42.292297</td>
+      <td>-38.075864</td>
+      <td>-57.937959</td>
+      <td>-18.010755</td>
+      <td>-37.219337</td>
+      <td>-48.702023</td>
+      <td>-52.334555</td>
+      <td>-41.344540</td>
+      <td>-18.983505</td>
+      <td>-47.706557</td>
+      <td>-42.901379</td>
+      <td>-31.225919</td>
+      <td>-45.966852</td>
+      <td>-40.188965</td>
+      <td>-31.719887</td>
+      <td>-41.340470</td>
+      <td>-39.818781</td>
+      <td>-47.821066</td>
+      <td>-49.151639</td>
+      <td>-37.109533</td>
+      <td>-41.041728</td>
+      <td>-46.503655</td>
+      <td>-50.116017</td>
+      <td>-49.637269</td>
+      <td>-36.243931</td>
+      <td>-46.265197</td>
+      <td>...</td>
+      <td>-20.505963</td>
+      <td>-44.965365</td>
+      <td>-36.036564</td>
+      <td>-31.982521</td>
+      <td>-44.200837</td>
+      <td>-39.103003</td>
+      <td>-37.057809</td>
+      <td>-24.790104</td>
+      <td>-33.852869</td>
+      <td>-49.709209</td>
+      <td>-38.020365</td>
+      <td>-35.492466</td>
+      <td>-34.935665</td>
+      <td>-45.545650</td>
+      <td>-35.914817</td>
+      <td>-33.966516</td>
+      <td>-37.428166</td>
+      <td>-50.099758</td>
+      <td>-49.519101</td>
+      <td>-22.047031</td>
+      <td>-47.040856</td>
+      <td>-33.577034</td>
+      <td>-35.560011</td>
+      <td>-28.917120</td>
+      <td>-43.001122</td>
+      <td>-45.941097</td>
+      <td>-45.995174</td>
+      <td>-40.892461</td>
+      <td>-28.542233</td>
+      <td>-44.726381</td>
+      <td>-11.921094</td>
+      <td>-40.063046</td>
+      <td>-37.234941</td>
+      <td>-49.103021</td>
+      <td>-54.023702</td>
+      <td>-30.624322</td>
+      <td>-42.484391</td>
+      <td>-50.970061</td>
+      <td>-44.335530</td>
+      <td>-33.278031</td>
+      <td>-37.356596</td>
+      <td>-45.127070</td>
+      <td>-38.424784</td>
+      <td>-31.133474</td>
+      <td>-39.181028</td>
+      <td>-38.726581</td>
+      <td>-40.537806</td>
+      <td>-40.639222</td>
+      <td>-39.257393</td>
+      <td>-45.827428</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 3458 columns</p>
+</div>
+
+
+## 4. Analyse de la Variable Cible (`target`)
+
+
+```python
+if 'df_train' in locals():
+    print("Distribution de la variable cible 'target' :")
+    target_counts = df_train['target'].value_counts().sort_index()
+    print(target_counts)
+
+    print("\nDistribution en pourcentage :")
+    target_percentage = df_train['target'].value_counts(normalize=True).sort_index() * 100
+    print(target_percentage)
+
+    plt.figure(figsize=(8, 5))
+    sns.countplot(x='target', data=df_train, order=target_counts.index)
+    plt.title('Distribution des Classes (Variable Cible)')
+    plt.xlabel('Classe')
+    plt.ylabel('Nombre d\'échantillons')
+    
+    for index, value in enumerate(target_counts):
+        percentage = target_percentage.iloc[index]
+        plt.text(index, value + 5, f"{value}\n({percentage:.1f}%)", ha='center', va='bottom')
+    plt.show()
+else:
+    print("Le DataFrame df_train n'a pas été chargé correctement.")
+```
+
+    Distribution de la variable cible 'target' :
+    target
+    0    1209
+    1     141
+    2     141
+    Name: count, dtype: int64
+    
+    Distribution en pourcentage :
+    target
+    0    81.086519
+    1     9.456740
+    2     9.456740
+    Name: proportion, dtype: float64
+    
+
+
+    
+![png](output_8_1.png)
+    
+
+
+**Observations sur la distribution des classes :**
+* La classe 0 (légitime) est la plus fréquente.
+* Les classes 1 et 2 (fausses stations) sont moins représentées.
+* Il y a un déséquilibre notable entre les classes. La classe 0 est majoritaire. Cela devra être pris en compte lors de l'entraînement (par exemple, en utilisant des métriques appropriées comme le F1-score, la précision pondérée, ou des techniques de ré-échantillonnage comme SMOTE ou la pondération des classes).
+
+## 5. Analyse des Features (`f_0` à `f_3455`)
+
+### 5.1 Statistiques Descriptives
+
+
+```python
+if 'df_train' in locals():
+    print("Statistiques descriptives des features (f_0 à f_3455) :")
+    features_df = df_train.drop(['ID', 'target'], axis=1)
+    
+    desc_stats = features_df.describe()
+    display(desc_stats)
+
+    plt.figure(figsize=(14, 5))
+
+    plt.subplot(1, 2, 1)
+    sns.histplot(desc_stats.loc['mean'], bins=50, kde=True)
+    plt.title('Distribution des Moyennes des Features')
+    plt.xlabel('Moyenne de la feature')
+
+    plt.subplot(1, 2, 2)
+    sns.histplot(desc_stats.loc['std'], bins=50, kde=True)
+    plt.title('Distribution des Écarts-types des Features')
+    plt.xlabel('Écart-type de la feature')
+
+    plt.tight_layout()
+    plt.show()
+else:
+    print("Le DataFrame df_train n'a pas été chargé correctement.")
+```
+
+    Statistiques descriptives des features (f_0 à f_3455) :
+    
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>f_0</th>
+      <th>f_1</th>
+      <th>f_2</th>
+      <th>f_3</th>
+      <th>f_4</th>
+      <th>f_5</th>
+      <th>f_6</th>
+      <th>f_7</th>
+      <th>f_8</th>
+      <th>f_9</th>
+      <th>f_10</th>
+      <th>f_11</th>
+      <th>f_12</th>
+      <th>f_13</th>
+      <th>f_14</th>
+      <th>f_15</th>
+      <th>f_16</th>
+      <th>f_17</th>
+      <th>f_18</th>
+      <th>f_19</th>
+      <th>f_20</th>
+      <th>f_21</th>
+      <th>f_22</th>
+      <th>f_23</th>
+      <th>f_24</th>
+      <th>f_25</th>
+      <th>f_26</th>
+      <th>f_27</th>
+      <th>f_28</th>
+      <th>f_29</th>
+      <th>f_30</th>
+      <th>f_31</th>
+      <th>f_32</th>
+      <th>f_33</th>
+      <th>f_34</th>
+      <th>f_35</th>
+      <th>f_36</th>
+      <th>f_37</th>
+      <th>f_38</th>
+      <th>f_39</th>
+      <th>f_40</th>
+      <th>f_41</th>
+      <th>f_42</th>
+      <th>f_43</th>
+      <th>f_44</th>
+      <th>f_45</th>
+      <th>f_46</th>
+      <th>f_47</th>
+      <th>f_48</th>
+      <th>f_49</th>
+      <th>...</th>
+      <th>f_3406</th>
+      <th>f_3407</th>
+      <th>f_3408</th>
+      <th>f_3409</th>
+      <th>f_3410</th>
+      <th>f_3411</th>
+      <th>f_3412</th>
+      <th>f_3413</th>
+      <th>f_3414</th>
+      <th>f_3415</th>
+      <th>f_3416</th>
+      <th>f_3417</th>
+      <th>f_3418</th>
+      <th>f_3419</th>
+      <th>f_3420</th>
+      <th>f_3421</th>
+      <th>f_3422</th>
+      <th>f_3423</th>
+      <th>f_3424</th>
+      <th>f_3425</th>
+      <th>f_3426</th>
+      <th>f_3427</th>
+      <th>f_3428</th>
+      <th>f_3429</th>
+      <th>f_3430</th>
+      <th>f_3431</th>
+      <th>f_3432</th>
+      <th>f_3433</th>
+      <th>f_3434</th>
+      <th>f_3435</th>
+      <th>f_3436</th>
+      <th>f_3437</th>
+      <th>f_3438</th>
+      <th>f_3439</th>
+      <th>f_3440</th>
+      <th>f_3441</th>
+      <th>f_3442</th>
+      <th>f_3443</th>
+      <th>f_3444</th>
+      <th>f_3445</th>
+      <th>f_3446</th>
+      <th>f_3447</th>
+      <th>f_3448</th>
+      <th>f_3449</th>
+      <th>f_3450</th>
+      <th>f_3451</th>
+      <th>f_3452</th>
+      <th>f_3453</th>
+      <th>f_3454</th>
+      <th>f_3455</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>...</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+      <td>1491.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-36.025564</td>
+      <td>-31.790284</td>
+      <td>-42.053352</td>
+      <td>-43.198133</td>
+      <td>-33.594962</td>
+      <td>-35.821412</td>
+      <td>-38.591200</td>
+      <td>-47.680546</td>
+      <td>-50.421536</td>
+      <td>-36.818454</td>
+      <td>-39.471084</td>
+      <td>-45.337717</td>
+      <td>-44.959230</td>
+      <td>-41.786019</td>
+      <td>-38.678062</td>
+      <td>-47.393613</td>
+      <td>-36.058412</td>
+      <td>-31.464525</td>
+      <td>-41.814836</td>
+      <td>-43.386053</td>
+      <td>-33.286691</td>
+      <td>-35.694820</td>
+      <td>-38.698073</td>
+      <td>-47.533810</td>
+      <td>-50.346930</td>
+      <td>-37.212534</td>
+      <td>-39.346087</td>
+      <td>-45.467748</td>
+      <td>-44.836730</td>
+      <td>-41.656916</td>
+      <td>-38.622683</td>
+      <td>-47.690803</td>
+      <td>-36.096603</td>
+      <td>-31.704759</td>
+      <td>-41.631091</td>
+      <td>-43.312991</td>
+      <td>-33.600195</td>
+      <td>-35.803083</td>
+      <td>-38.750827</td>
+      <td>-47.803647</td>
+      <td>-50.320637</td>
+      <td>-36.899487</td>
+      <td>-39.090073</td>
+      <td>-45.554903</td>
+      <td>-44.997320</td>
+      <td>-41.800599</td>
+      <td>-38.867731</td>
+      <td>-47.609286</td>
+      <td>-38.495007</td>
+      <td>-31.901740</td>
+      <td>...</td>
+      <td>-37.947594</td>
+      <td>-46.921484</td>
+      <td>-41.978617</td>
+      <td>-32.050505</td>
+      <td>-39.358973</td>
+      <td>-44.924048</td>
+      <td>-35.197003</td>
+      <td>-30.868849</td>
+      <td>-37.850103</td>
+      <td>-46.834003</td>
+      <td>-42.103319</td>
+      <td>-37.214245</td>
+      <td>-38.295751</td>
+      <td>-45.196111</td>
+      <td>-36.168401</td>
+      <td>-38.437433</td>
+      <td>-37.944975</td>
+      <td>-46.661971</td>
+      <td>-42.198998</td>
+      <td>-31.961830</td>
+      <td>-39.320235</td>
+      <td>-44.454730</td>
+      <td>-35.309261</td>
+      <td>-30.877397</td>
+      <td>-37.676651</td>
+      <td>-46.853127</td>
+      <td>-41.927245</td>
+      <td>-37.397909</td>
+      <td>-37.905428</td>
+      <td>-45.033582</td>
+      <td>-36.318557</td>
+      <td>-38.187705</td>
+      <td>-38.015428</td>
+      <td>-46.894530</td>
+      <td>-42.115760</td>
+      <td>-31.912594</td>
+      <td>-39.341957</td>
+      <td>-44.899234</td>
+      <td>-35.080662</td>
+      <td>-30.707167</td>
+      <td>-37.896077</td>
+      <td>-46.660745</td>
+      <td>-42.004805</td>
+      <td>-37.433666</td>
+      <td>-37.981836</td>
+      <td>-45.028051</td>
+      <td>-36.010089</td>
+      <td>-38.202824</td>
+      <td>-37.853285</td>
+      <td>-46.918447</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>7.526132</td>
+      <td>8.278178</td>
+      <td>6.915052</td>
+      <td>7.170975</td>
+      <td>8.335229</td>
+      <td>7.265872</td>
+      <td>7.083250</td>
+      <td>7.322659</td>
+      <td>8.992517</td>
+      <td>7.124871</td>
+      <td>7.122577</td>
+      <td>7.215592</td>
+      <td>9.460700</td>
+      <td>7.820508</td>
+      <td>6.974692</td>
+      <td>7.457595</td>
+      <td>7.811176</td>
+      <td>8.504040</td>
+      <td>7.325711</td>
+      <td>7.305045</td>
+      <td>8.401928</td>
+      <td>7.599864</td>
+      <td>7.017055</td>
+      <td>7.438960</td>
+      <td>8.977273</td>
+      <td>6.959687</td>
+      <td>6.999413</td>
+      <td>7.358339</td>
+      <td>9.747213</td>
+      <td>8.220349</td>
+      <td>6.796199</td>
+      <td>7.404952</td>
+      <td>7.660500</td>
+      <td>8.257522</td>
+      <td>7.141636</td>
+      <td>7.212557</td>
+      <td>7.980178</td>
+      <td>7.543226</td>
+      <td>6.923278</td>
+      <td>7.367385</td>
+      <td>8.655987</td>
+      <td>7.121188</td>
+      <td>6.998521</td>
+      <td>7.391976</td>
+      <td>9.726203</td>
+      <td>8.178601</td>
+      <td>7.022192</td>
+      <td>7.426606</td>
+      <td>7.812507</td>
+      <td>9.546852</td>
+      <td>...</td>
+      <td>7.051659</td>
+      <td>6.934974</td>
+      <td>9.248732</td>
+      <td>7.799815</td>
+      <td>7.085688</td>
+      <td>7.325267</td>
+      <td>7.488646</td>
+      <td>7.065932</td>
+      <td>7.082535</td>
+      <td>7.041343</td>
+      <td>7.051053</td>
+      <td>7.368878</td>
+      <td>7.577307</td>
+      <td>7.083053</td>
+      <td>7.132543</td>
+      <td>7.676382</td>
+      <td>7.118611</td>
+      <td>7.259690</td>
+      <td>9.312647</td>
+      <td>7.758236</td>
+      <td>7.109015</td>
+      <td>7.178121</td>
+      <td>7.518897</td>
+      <td>6.976082</td>
+      <td>7.181278</td>
+      <td>7.079872</td>
+      <td>7.290258</td>
+      <td>7.088800</td>
+      <td>7.255884</td>
+      <td>7.039258</td>
+      <td>7.027079</td>
+      <td>7.785204</td>
+      <td>7.122885</td>
+      <td>7.105482</td>
+      <td>9.330801</td>
+      <td>7.415486</td>
+      <td>7.214411</td>
+      <td>7.336992</td>
+      <td>7.208033</td>
+      <td>7.178794</td>
+      <td>7.104150</td>
+      <td>7.434672</td>
+      <td>7.062555</td>
+      <td>7.139658</td>
+      <td>7.708081</td>
+      <td>7.261451</td>
+      <td>6.899449</td>
+      <td>7.582654</td>
+      <td>6.995269</td>
+      <td>6.985596</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-49.546726</td>
+      <td>-58.185262</td>
+      <td>-55.155300</td>
+      <td>-56.979272</td>
+      <td>-60.080805</td>
+      <td>-49.507622</td>
+      <td>-56.345732</td>
+      <td>-61.142043</td>
+      <td>-64.432936</td>
+      <td>-52.666482</td>
+      <td>-59.386364</td>
+      <td>-57.800523</td>
+      <td>-60.019665</td>
+      <td>-55.450952</td>
+      <td>-55.344266</td>
+      <td>-61.383044</td>
+      <td>-49.070300</td>
+      <td>-59.432924</td>
+      <td>-55.534763</td>
+      <td>-59.143877</td>
+      <td>-58.291616</td>
+      <td>-49.967175</td>
+      <td>-56.907647</td>
+      <td>-60.945332</td>
+      <td>-64.846554</td>
+      <td>-53.923805</td>
+      <td>-58.051005</td>
+      <td>-57.244667</td>
+      <td>-60.067423</td>
+      <td>-54.933315</td>
+      <td>-57.363384</td>
+      <td>-61.278875</td>
+      <td>-49.649839</td>
+      <td>-57.490122</td>
+      <td>-57.016408</td>
+      <td>-56.722570</td>
+      <td>-58.838362</td>
+      <td>-48.174684</td>
+      <td>-54.512549</td>
+      <td>-62.385396</td>
+      <td>-64.232724</td>
+      <td>-53.312207</td>
+      <td>-58.526431</td>
+      <td>-59.707445</td>
+      <td>-59.723285</td>
+      <td>-55.278849</td>
+      <td>-57.472425</td>
+      <td>-59.990616</td>
+      <td>-52.491256</td>
+      <td>-61.181216</td>
+      <td>...</td>
+      <td>-57.628759</td>
+      <td>-63.837865</td>
+      <td>-56.831113</td>
+      <td>-53.599365</td>
+      <td>-56.922056</td>
+      <td>-58.913994</td>
+      <td>-56.184466</td>
+      <td>-48.806773</td>
+      <td>-57.669901</td>
+      <td>-65.403453</td>
+      <td>-54.799725</td>
+      <td>-52.242719</td>
+      <td>-59.861427</td>
+      <td>-62.313201</td>
+      <td>-52.550484</td>
+      <td>-50.590722</td>
+      <td>-58.571838</td>
+      <td>-64.130224</td>
+      <td>-56.792865</td>
+      <td>-55.591978</td>
+      <td>-55.369112</td>
+      <td>-58.807108</td>
+      <td>-58.216802</td>
+      <td>-49.161040</td>
+      <td>-57.411481</td>
+      <td>-64.178590</td>
+      <td>-55.739092</td>
+      <td>-52.555166</td>
+      <td>-58.242879</td>
+      <td>-62.625347</td>
+      <td>-51.876770</td>
+      <td>-51.028840</td>
+      <td>-57.780961</td>
+      <td>-63.290227</td>
+      <td>-56.175538</td>
+      <td>-52.932317</td>
+      <td>-59.035540</td>
+      <td>-59.740650</td>
+      <td>-55.574080</td>
+      <td>-47.217788</td>
+      <td>-57.715945</td>
+      <td>-63.680361</td>
+      <td>-55.314876</td>
+      <td>-53.250260</td>
+      <td>-59.831216</td>
+      <td>-63.172610</td>
+      <td>-52.336076</td>
+      <td>-51.707992</td>
+      <td>-56.007395</td>
+      <td>-64.149743</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-41.034316</td>
+      <td>-35.412184</td>
+      <td>-46.693774</td>
+      <td>-48.075347</td>
+      <td>-36.904316</td>
+      <td>-40.564447</td>
+      <td>-43.274016</td>
+      <td>-52.591547</td>
+      <td>-56.330808</td>
+      <td>-41.537257</td>
+      <td>-43.684489</td>
+      <td>-50.033971</td>
+      <td>-51.356049</td>
+      <td>-46.837145</td>
+      <td>-43.275494</td>
+      <td>-52.217827</td>
+      <td>-41.260952</td>
+      <td>-34.943879</td>
+      <td>-46.651000</td>
+      <td>-48.268562</td>
+      <td>-36.815151</td>
+      <td>-40.775489</td>
+      <td>-43.334711</td>
+      <td>-52.521320</td>
+      <td>-56.402189</td>
+      <td>-41.707685</td>
+      <td>-43.776825</td>
+      <td>-50.376147</td>
+      <td>-51.328384</td>
+      <td>-46.989233</td>
+      <td>-43.016273</td>
+      <td>-52.635495</td>
+      <td>-41.285758</td>
+      <td>-35.063401</td>
+      <td>-46.386557</td>
+      <td>-48.143631</td>
+      <td>-36.813226</td>
+      <td>-40.687057</td>
+      <td>-43.276965</td>
+      <td>-52.732575</td>
+      <td>-56.232525</td>
+      <td>-41.570663</td>
+      <td>-43.444555</td>
+      <td>-50.384201</td>
+      <td>-51.506204</td>
+      <td>-47.157254</td>
+      <td>-43.252269</td>
+      <td>-52.534121</td>
+      <td>-43.432381</td>
+      <td>-34.836883</td>
+      <td>...</td>
+      <td>-42.332242</td>
+      <td>-51.475856</td>
+      <td>-48.183390</td>
+      <td>-36.343517</td>
+      <td>-44.103378</td>
+      <td>-49.865678</td>
+      <td>-39.542260</td>
+      <td>-35.614287</td>
+      <td>-42.175137</td>
+      <td>-51.331212</td>
+      <td>-46.840192</td>
+      <td>-42.233935</td>
+      <td>-42.340994</td>
+      <td>-49.804576</td>
+      <td>-41.050258</td>
+      <td>-43.418964</td>
+      <td>-42.443523</td>
+      <td>-51.464118</td>
+      <td>-48.337092</td>
+      <td>-36.028327</td>
+      <td>-43.961237</td>
+      <td>-49.281688</td>
+      <td>-39.454729</td>
+      <td>-35.594070</td>
+      <td>-42.105111</td>
+      <td>-51.614237</td>
+      <td>-46.817607</td>
+      <td>-42.133733</td>
+      <td>-42.226629</td>
+      <td>-49.634394</td>
+      <td>-40.857417</td>
+      <td>-43.412016</td>
+      <td>-42.413545</td>
+      <td>-51.568218</td>
+      <td>-48.297054</td>
+      <td>-35.941099</td>
+      <td>-44.123623</td>
+      <td>-49.540952</td>
+      <td>-39.151436</td>
+      <td>-35.403795</td>
+      <td>-42.415401</td>
+      <td>-51.320497</td>
+      <td>-46.633712</td>
+      <td>-42.168345</td>
+      <td>-42.283724</td>
+      <td>-49.689282</td>
+      <td>-40.624881</td>
+      <td>-43.224595</td>
+      <td>-42.402244</td>
+      <td>-51.493440</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>-37.726149</td>
+      <td>-31.305910</td>
+      <td>-43.456727</td>
+      <td>-44.526252</td>
+      <td>-33.104941</td>
+      <td>-37.461652</td>
+      <td>-39.792968</td>
+      <td>-49.120241</td>
+      <td>-52.435932</td>
+      <td>-38.152421</td>
+      <td>-40.302537</td>
+      <td>-46.973806</td>
+      <td>-47.462103</td>
+      <td>-43.549638</td>
+      <td>-39.825227</td>
+      <td>-48.843419</td>
+      <td>-37.843549</td>
+      <td>-30.930939</td>
+      <td>-43.405780</td>
+      <td>-44.813449</td>
+      <td>-32.957613</td>
+      <td>-37.315408</td>
+      <td>-39.711558</td>
+      <td>-49.068965</td>
+      <td>-52.475798</td>
+      <td>-38.386609</td>
+      <td>-40.045970</td>
+      <td>-47.023147</td>
+      <td>-47.582159</td>
+      <td>-43.457121</td>
+      <td>-39.588167</td>
+      <td>-49.379437</td>
+      <td>-37.742494</td>
+      <td>-31.291326</td>
+      <td>-43.213864</td>
+      <td>-44.919206</td>
+      <td>-33.116561</td>
+      <td>-37.483205</td>
+      <td>-39.655229</td>
+      <td>-49.387695</td>
+      <td>-52.173738</td>
+      <td>-38.210172</td>
+      <td>-39.546512</td>
+      <td>-47.320788</td>
+      <td>-47.607280</td>
+      <td>-43.557967</td>
+      <td>-39.881540</td>
+      <td>-49.125290</td>
+      <td>-40.125925</td>
+      <td>-30.862074</td>
+      <td>...</td>
+      <td>-38.715613</td>
+      <td>-48.024538</td>
+      <td>-44.179346</td>
+      <td>-32.422590</td>
+      <td>-40.673315</td>
+      <td>-46.470878</td>
+      <td>-35.662449</td>
+      <td>-32.064327</td>
+      <td>-38.578122</td>
+      <td>-48.000900</td>
+      <td>-43.476027</td>
+      <td>-38.620813</td>
+      <td>-38.576255</td>
+      <td>-46.371574</td>
+      <td>-37.503752</td>
+      <td>-40.156334</td>
+      <td>-38.718977</td>
+      <td>-47.899282</td>
+      <td>-44.415102</td>
+      <td>-32.106631</td>
+      <td>-40.513001</td>
+      <td>-45.934777</td>
+      <td>-35.768971</td>
+      <td>-32.155146</td>
+      <td>-38.459815</td>
+      <td>-48.028155</td>
+      <td>-43.432294</td>
+      <td>-38.618948</td>
+      <td>-38.352332</td>
+      <td>-46.094244</td>
+      <td>-37.530529</td>
+      <td>-39.841331</td>
+      <td>-38.901725</td>
+      <td>-47.872719</td>
+      <td>-44.438231</td>
+      <td>-32.479998</td>
+      <td>-40.535104</td>
+      <td>-46.250780</td>
+      <td>-35.394408</td>
+      <td>-32.174445</td>
+      <td>-38.665489</td>
+      <td>-47.904866</td>
+      <td>-43.670489</td>
+      <td>-38.802291</td>
+      <td>-38.345391</td>
+      <td>-46.365313</td>
+      <td>-36.992992</td>
+      <td>-39.726904</td>
+      <td>-38.534820</td>
+      <td>-48.146609</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>-33.083523</td>
+      <td>-26.894991</td>
+      <td>-39.379352</td>
+      <td>-40.322942</td>
+      <td>-29.115439</td>
+      <td>-32.974164</td>
+      <td>-35.057282</td>
+      <td>-44.988057</td>
+      <td>-47.210364</td>
+      <td>-33.380456</td>
+      <td>-35.912901</td>
+      <td>-42.476039</td>
+      <td>-41.230854</td>
+      <td>-38.877870</td>
+      <td>-35.416000</td>
+      <td>-44.435049</td>
+      <td>-33.165942</td>
+      <td>-26.813921</td>
+      <td>-38.997899</td>
+      <td>-40.301255</td>
+      <td>-28.797670</td>
+      <td>-33.021944</td>
+      <td>-35.308999</td>
+      <td>-44.611959</td>
+      <td>-47.024736</td>
+      <td>-33.874120</td>
+      <td>-35.803112</td>
+      <td>-42.822150</td>
+      <td>-40.782872</td>
+      <td>-38.749985</td>
+      <td>-35.235069</td>
+      <td>-44.586072</td>
+      <td>-33.001078</td>
+      <td>-26.944828</td>
+      <td>-38.638499</td>
+      <td>-40.344962</td>
+      <td>-29.100758</td>
+      <td>-32.983600</td>
+      <td>-35.356087</td>
+      <td>-44.928938</td>
+      <td>-47.000797</td>
+      <td>-33.778842</td>
+      <td>-35.338929</td>
+      <td>-42.642385</td>
+      <td>-41.613114</td>
+      <td>-39.040514</td>
+      <td>-35.660375</td>
+      <td>-44.500420</td>
+      <td>-35.693483</td>
+      <td>-26.572907</td>
+      <td>...</td>
+      <td>-34.433076</td>
+      <td>-43.807101</td>
+      <td>-38.428071</td>
+      <td>-27.975733</td>
+      <td>-36.415481</td>
+      <td>-41.909973</td>
+      <td>-31.006051</td>
+      <td>-27.796462</td>
+      <td>-34.334153</td>
+      <td>-43.699279</td>
+      <td>-39.338999</td>
+      <td>-34.306171</td>
+      <td>-34.427455</td>
+      <td>-42.131519</td>
+      <td>-32.721477</td>
+      <td>-35.697406</td>
+      <td>-34.118160</td>
+      <td>-43.368926</td>
+      <td>-38.840973</td>
+      <td>-28.007315</td>
+      <td>-36.110689</td>
+      <td>-41.564156</td>
+      <td>-30.895479</td>
+      <td>-27.651127</td>
+      <td>-33.917088</td>
+      <td>-43.294291</td>
+      <td>-38.708073</td>
+      <td>-34.282031</td>
+      <td>-33.952089</td>
+      <td>-41.770908</td>
+      <td>-33.032731</td>
+      <td>-35.264689</td>
+      <td>-34.532783</td>
+      <td>-43.837269</td>
+      <td>-38.641208</td>
+      <td>-27.647006</td>
+      <td>-36.025928</td>
+      <td>-42.177974</td>
+      <td>-31.146304</td>
+      <td>-27.465143</td>
+      <td>-34.527724</td>
+      <td>-43.301217</td>
+      <td>-39.261426</td>
+      <td>-34.303490</td>
+      <td>-33.915403</td>
+      <td>-41.560068</td>
+      <td>-32.705726</td>
+      <td>-35.393133</td>
+      <td>-33.911753</td>
+      <td>-43.711314</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>-1.629375</td>
+      <td>-5.376032</td>
+      <td>-4.717370</td>
+      <td>-11.923473</td>
+      <td>0.203893</td>
+      <td>-1.792798</td>
+      <td>-2.277278</td>
+      <td>-12.147182</td>
+      <td>-5.328304</td>
+      <td>1.168342</td>
+      <td>-1.098880</td>
+      <td>-8.355170</td>
+      <td>4.585307</td>
+      <td>1.623740</td>
+      <td>-3.212373</td>
+      <td>-8.376917</td>
+      <td>3.638122</td>
+      <td>8.793503</td>
+      <td>-8.241512</td>
+      <td>-7.583667</td>
+      <td>2.560293</td>
+      <td>0.920243</td>
+      <td>-5.630877</td>
+      <td>-9.444365</td>
+      <td>-5.109998</td>
+      <td>4.372295</td>
+      <td>1.525733</td>
+      <td>-8.276528</td>
+      <td>0.031137</td>
+      <td>4.207025</td>
+      <td>-5.677943</td>
+      <td>-6.114119</td>
+      <td>3.453444</td>
+      <td>-1.147968</td>
+      <td>-0.381640</td>
+      <td>-8.705199</td>
+      <td>-5.247035</td>
+      <td>38.596446</td>
+      <td>1.295025</td>
+      <td>-6.463317</td>
+      <td>0.142523</td>
+      <td>-3.356136</td>
+      <td>-11.613131</td>
+      <td>-10.640631</td>
+      <td>-1.084645</td>
+      <td>-2.821044</td>
+      <td>0.617139</td>
+      <td>-3.451619</td>
+      <td>3.111142</td>
+      <td>6.548295</td>
+      <td>...</td>
+      <td>-1.783259</td>
+      <td>-14.842922</td>
+      <td>4.153154</td>
+      <td>5.469610</td>
+      <td>5.001091</td>
+      <td>-7.288243</td>
+      <td>-5.022751</td>
+      <td>9.937820</td>
+      <td>2.192885</td>
+      <td>-5.558039</td>
+      <td>-5.047005</td>
+      <td>-0.531974</td>
+      <td>-5.951172</td>
+      <td>-14.632009</td>
+      <td>-2.369664</td>
+      <td>0.361906</td>
+      <td>-7.890194</td>
+      <td>-11.033092</td>
+      <td>4.506268</td>
+      <td>4.848966</td>
+      <td>6.692462</td>
+      <td>-10.630631</td>
+      <td>-5.279216</td>
+      <td>2.573694</td>
+      <td>-3.918695</td>
+      <td>-7.677443</td>
+      <td>6.270690</td>
+      <td>0.563617</td>
+      <td>-7.285692</td>
+      <td>-8.196302</td>
+      <td>-2.729462</td>
+      <td>4.249956</td>
+      <td>-2.816745</td>
+      <td>-11.975466</td>
+      <td>3.572025</td>
+      <td>-3.420939</td>
+      <td>7.541764</td>
+      <td>-2.018799</td>
+      <td>-1.894710</td>
+      <td>4.243547</td>
+      <td>6.690662</td>
+      <td>3.646722</td>
+      <td>-4.347594</td>
+      <td>2.118831</td>
+      <td>-6.010503</td>
+      <td>-9.322613</td>
+      <td>-4.587274</td>
+      <td>-0.578765</td>
+      <td>-3.341985</td>
+      <td>-12.218777</td>
+    </tr>
+  </tbody>
+</table>
+<p>8 rows × 3456 columns</p>
+</div>
+
+
+
+    
+![png](output_12_2.png)
+    
+
+
+**Observations sur les statistiques des features :**
+* Y a-t-il une grande variation dans les échelles (min/max) entre les différentes features ? (Regarder les lignes 'min', 'max', 'std'). Si oui, une mise à l'échelle (scaling) sera probablement nécessaire avant d'entraîner certains types de modèles (ex: SVM, réseaux de neurones, régression logistique).
+* Les moyennes et écarts-types sont-ils similaires pour toutes les features ou très variés ?
+* Y a-t-il des valeurs aberrantes évidentes (min/max très éloignés des quartiles) ?
+
+### 5.2 Visualisation d'Échantillons
+
+
+```python
+if 'df_train' in locals():
+    img_rows, img_cols = 72, 48
+    num_features = img_rows * img_cols
+
+    sample_ids = {}
+    for target_class in sorted(df_train['target'].unique()):
+        sample_id = df_train[df_train['target'] == target_class]['ID'].iloc[0]
+        sample_ids[target_class] = sample_id
+
+    print(f"IDs des échantillons sélectionnés pour visualisation : {sample_ids}")
+
+    plt.figure(figsize=(15, 5 * len(sample_ids)))
+    plot_index = 1
+    for target_class, sample_id in sample_ids.items():
+        sample_row = df_train[df_train['ID'] == sample_id].iloc[0]
+        
+        sample_features = sample_row.filter(regex='^f_').values
+        
+        if len(sample_features) == num_features:
+            sample_image = sample_features.reshape((img_rows, img_cols))
+            
+            plt.subplot(len(sample_ids), 1, plot_index)
+            sns.heatmap(sample_image, cmap='gray', cbar=True)
+            plt.title(f'Échantillon ID: {sample_id} - Classe Cible: {target_class}')
+            plt.xlabel('Colonne (Temps/Répétition)')
+            plt.ylabel('Ligne (Sous-porteuse)')
+            plot_index += 1
+        else:
+            print(f"Erreur: L'échantillon ID {sample_id} n'a pas {num_features} features, mais {len(sample_features)}.")
+
+    plt.tight_layout()
+    plt.show()
+
+else:
+    print("Le DataFrame df_train n'a pas été chargé correctement.")
+```
+
+    IDs des échantillons sélectionnés pour visualisation : {0: 0, 1: 1009, 2: 10}
+    
+
+
+    
+![png](output_15_1.png)
+    
+
+
+**Observations sur les visualisations :**
+* Voit-on des structures ou des motifs différents entre les classes ?
+* Certaines zones de l'image (correspondant à certaines features) semblent-elles plus discriminantes ?
+* Cela confirme que les données ont une structure spatiale/fréquentielle qui pourrait être exploitée par des modèles comme les réseaux de neurones convolutifs (CNN) si on les traite comme des images, ou par d'autres modèles après aplatissement.
+
+## 6. Réduction de Dimension pour Visualisation
+
+
+```python
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+```
+
+### 6.1 Mise à l'échelle des Features
+
+
+```python
+if 'df_train' in locals():
+    print("Mise à l'échelle des features...")
+    features_cols = df_train.filter(regex='^f_').columns
+    X = df_train[features_cols]
+    y = df_train['target']
+
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    print(f"Features mises à l'échelle. Dimensions de X_scaled : {X_scaled.shape}")
+else:
+    print("Le DataFrame df_train n'a pas été chargé correctement.")
+```
+
+    Mise à l'échelle des features...
+    Features mises à l'échelle. Dimensions de X_scaled : (1491, 3456)
+    
+
+### 6.2 Analyse en Composantes Principales (PCA)
+
+
+```python
+if 'X_scaled' in locals():
+    print("Application de la PCA (n_components=2)...")
+    pca = PCA(n_components=2, random_state=42)
+    X_pca = pca.fit_transform(X_scaled)
+
+    print(f"PCA terminée. Dimensions de X_pca : {X_pca.shape}")
+
+    explained_variance_ratio = pca.explained_variance_ratio_
+    print(f"Variance expliquée par la 1ère composante : {explained_variance_ratio[0]*100:.2f}%")
+    print(f"Variance expliquée par la 2ème composante : {explained_variance_ratio[1]*100:.2f}%")
+    print(f"Variance totale expliquée par les 2 composantes : {explained_variance_ratio.sum()*100:.2f}%")
+
+    df_pca = pd.DataFrame(data=X_pca, columns=['PC1', 'PC2'])
+    df_pca['target'] = y
+
+    # Visualisation
+    plt.figure(figsize=(10, 8))
+    sns.scatterplot(
+        x="PC1", y="PC2",
+        hue="target",
+        palette=sns.color_palette("hsv", n_colors=len(df_pca['target'].unique())),
+        data=df_pca,
+        legend="full",
+        alpha=0.7
+    )
+    plt.title('Visualisation des Données après PCA (2 Composantes)')
+    plt.xlabel(f'Première Composante Principale ({explained_variance_ratio[0]*100:.1f}% Var)')
+    plt.ylabel(f'Deuxième Composante Principale ({explained_variance_ratio[1]*100:.1f}% Var)')
+    plt.show()
+
+else:
+    print("Les données mises à l'échelle (X_scaled) ne sont pas disponibles.")
+```
+
+    Application de la PCA (n_components=2)...
+    PCA terminée. Dimensions de X_pca : (1491, 2)
+    Variance expliquée par la 1ère composante : 5.58%
+    Variance expliquée par la 2ème composante : 3.69%
+    Variance totale expliquée par les 2 composantes : 9.27%
+    
+
+
+    
+![png](output_22_1.png)
+    
+
+
+**Observations sur la PCA :**
+* Les deux premières composantes expliquent X% de la variance totale (attendez-vous à ce que ce soit faible avec autant de features initiales).
+* Les classes sont-elles bien séparées dans cet espace PCA 2D ?
+* Y a-t-il beaucoup de superposition entre les classes ?
+* La classe 0 semble-t-elle distincte des classes 1 et 2 ? Les classes 1 et 2 sont-elles séparables entre elles ?
+
+### 6.3 t-SNE (t-distributed Stochastic Neighbor Embedding)
+
+
+```python
+if 'X_scaled' in locals():
+    print("Application de t-SNE (n_components=2)... (Cela peut prendre un moment)")
+
+    tsne = TSNE(
+        n_components=2,
+        random_state=42,
+        perplexity=30,
+        n_iter=350,
+        init='pca',
+        learning_rate='auto'
+    )
+    X_tsne = tsne.fit_transform(X_scaled)
+
+    print(f"t-SNE terminée. Dimensions de X_tsne : {X_tsne.shape}")
+
+    df_tsne = pd.DataFrame(data=X_tsne, columns=['TSNE1', 'TSNE2'])
+    df_tsne['target'] = y
+
+    plt.figure(figsize=(10, 8))
+    sns.scatterplot(
+        x="TSNE1", y="TSNE2",
+        hue="target",
+        palette=sns.color_palette("hsv", n_colors=len(df_tsne['target'].unique())),
+        data=df_tsne,
+        legend="full",
+        alpha=0.8
+    )
+    plt.title('Visualisation des Données après t-SNE (2 Composantes)')
+    plt.xlabel('Composante t-SNE 1')
+    plt.ylabel('Composante t-SNE 2')
+    plt.show()
+
+else:
+    print("Les données mises à l'échelle (X_scaled) ne sont pas disponibles.")
+```
+
+    Application de t-SNE (n_components=2)... (Cela peut prendre un moment)
+    
+
+    C:\Users\redh0\.conda\envs\Privacy_Preserving_Face_Recognition_Project\Lib\site-packages\sklearn\manifold\_t_sne.py:1164: FutureWarning: 'n_iter' was renamed to 'max_iter' in version 1.5 and will be removed in 1.7.
+      warnings.warn(
+    
+
+    t-SNE terminée. Dimensions de X_tsne : (1491, 2)
+    
+
+
+    
+![png](output_25_3.png)
+    
+
+
+**Observations sur t-SNE :**
+* t-SNE parvient-elle à former des groupes (clusters) plus distincts pour chaque classe que la PCA ?
+* La séparation entre les classes 0, 1 et 2 est-elle plus nette ?
+* Y a-t-il encore des points qui semblent mal classés ou à la frontière entre les clusters ?
+* **Important :** La distance entre les clusters t-SNE n'a pas forcément de signification directe, contrairement à la variance en PCA. t-SNE est surtout utile pour voir si des groupes existent.
+
+
+```python
+
+```
