@@ -10,8 +10,8 @@ dataset_base_folder = '..\datasets projet' # Dossier contenant Train, Test, labe
 train_folder = os.path.join(dataset_base_folder, 'Train')
 test_folder = os.path.join(dataset_base_folder, 'Test')
 label_file = os.path.join(dataset_base_folder, 'label_train.csv')
-output_train_csv_file = 'train_processed.csv' # Nom du fichier CSV pour l'entraînement
-output_test_csv_file = 'test_processed.csv'   # Nom du fichier CSV pour le test
+output_train_csv_file = '../data/processed/train_processed.csv'  # Nom du fichier CSV pour l'entraînement
+output_test_csv_file = '../data/processed/test_processed.csv'  # Nom du fichier CSV pour le test
 
 # --- Étape 1: Charger les labels d'entraînement ---
 print(f"Chargement des labels depuis {label_file}...")
