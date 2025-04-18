@@ -1,0 +1,75 @@
+Feature Analysis Summary (Based on Dynamically Calculated Features):
+
+--- Global Top 5 Features ---
+ExtraTrees Importance:
+  1. fft_dc_magnitude: 0.0650
+  2. fft_max_magnitude: 0.0643
+  3. stat_energy: 0.0598
+  4. stat_p10: 0.0502
+  5. stat_p90: 0.0490
+
+SelectKBest (f_classif) Score:
+  1. fft_mag_p90: 2686.9435
+  2. stat_skewness: 2469.7680
+  3. stat_p25: 2445.5857
+  4. stat_p90: 2443.4670
+  5. stat_iqr: 2127.5090
+--------------------
+
+--- Basic Statistics Features (16 total defined) ---
+  Mean ExtraTrees Importance: 0.0344
+  Mean SelectKBest Score:   1194.1286
+
+  Top 5 ExtraTrees Importance:
+    - stat_energy: 0.0598
+    - stat_p10: 0.0502
+    - stat_p90: 0.0490
+    - stat_mean: 0.0480
+    - stat_p25: 0.0475
+
+  Top 5 SelectKBest (f_classif) Score:
+    - stat_skewness: 2469.7680
+    - stat_p25: 2445.5857
+    - stat_p90: 2443.4670
+    - stat_iqr: 2127.5090
+    - stat_p75: 1738.5922
+--------------------
+
+--- GLCM Features (72 total defined) ---
+  Mean ExtraTrees Importance: 0.0000
+  Mean SelectKBest Score:   0.0680
+
+  Top 5 ExtraTrees Importance:
+    - glcm_ASM_d1_a90: 0.0000
+    - glcm_ASM_d5_a0: 0.0000
+    - glcm_energy_d5_a0: 0.0000
+    - glcm_homogeneity_d5_a135: 0.0000
+    - glcm_ASM_d5_a135: 0.0000
+
+  Top 5 SelectKBest (f_classif) Score:
+    - glcm_ASM_d1_a135: 0.2332
+    - glcm_homogeneity_d1_a135: 0.2332
+    - glcm_energy_d1_a135: 0.2332
+    - glcm_ASM_d5_a135: 0.2332
+    - glcm_energy_d5_a135: 0.2332
+--------------------
+
+--- FFT Magnitude Features (13 total defined) ---
+  Mean ExtraTrees Importance: 0.0346
+  Mean SelectKBest Score:   1262.5268
+
+  Top 5 ExtraTrees Importance:
+    - fft_dc_magnitude: 0.0650
+    - fft_max_magnitude: 0.0643
+    - fft_std_magnitude_no_dc: 0.0466
+    - fft_spectral_energy: 0.0448
+    - fft_std_magnitude: 0.0438
+
+  Top 5 SelectKBest (f_classif) Score:
+    - fft_mag_p90: 2686.9435
+    - fft_mag_p75: 1973.9394
+    - fft_mean_magnitude_no_dc: 1835.3129
+    - fft_mean_magnitude: 1807.5705
+    - fft_mag_p50: 1739.0948
+--------------------
+
