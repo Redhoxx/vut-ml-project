@@ -1,7 +1,8 @@
 import pandas as pd
 from pathlib import Path
 
-import config
+from notebooks import config
+
 
 def load_train_data_from_csv(csv_path=config.TRAIN_PROCESSED_PATH):
     """

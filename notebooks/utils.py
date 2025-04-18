@@ -7,7 +7,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
-import config
+from notebooks import config
+
 
 def set_seed(seed_value=config.SEED):
     """Fixe les seeds pour la reproductibilité."""

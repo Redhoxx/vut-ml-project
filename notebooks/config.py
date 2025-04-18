@@ -6,7 +6,7 @@ from sklearn.feature_selection import f_classif
 try:
     BASE_DIR = Path(__file__).resolve().parent.parent
 except NameError:
-    BASE_DIR = Path('.').resolve().parent
+    BASE_DIR = Path('../src').resolve().parent
 
 DATA_DIR = BASE_DIR / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
