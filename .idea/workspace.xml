@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b2cf551a-8cc3-48ee-9ca3-1e7b6818a1e1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/engineered_features_extract/engineered_features_train.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/engineered_features_extract/feature_analysis_summary.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/cnn eda-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/cnn eda-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/cnn eda.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/cnn eda.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +55,7 @@
     &quot;Python.generate_notebook.executor&quot;: &quot;Run&quot;,
     &quot;Python.predict.executor&quot;: &quot;Run&quot;,
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.tgezf.executor&quot;: &quot;Run&quot;,
     &quot;Python.train.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
@@ -70,36 +71,14 @@
       <recent name="C:\Users\redh0\Desktop\Paperasse\Scolaire\Sup\VUT\courses\ML\vut-ml-project\code" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\redh0\Desktop\Paperasse\Scolaire\Sup\VUT\courses\ML\vut-ml-project\models_trained\cnn" />
       <recent name="C:\Users\redh0\Desktop\Paperasse\Scolaire\Sup\VUT\courses\ML\vut-ml-project\submissions" />
       <recent name="C:\Users\redh0\Desktop\Paperasse\Scolaire\Sup\VUT\courses\ML\vut-ml-project\notebooks" />
       <recent name="C:\Users\redh0\Desktop\Paperasse\Scolaire\Sup\VUT\courses\ML\vut-ml-project\data\processed" />
       <recent name="C:\Users\redh0\Desktop\Paperasse\Scolaire\Sup\VUT\courses\ML\vut-ml-project\data\raw" />
-      <recent name="C:\Users\redh0\Desktop\Paperasse\Scolaire\Sup\VUT\courses\ML\vut-ml-project\analyse" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.generate_notebook">
-    <configuration name="evaluate" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="projet" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/evaluate.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.tgezf">
     <configuration name="feature_pipeline" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="projet" />
       <option name="ENV_FILES" value="" />
@@ -166,6 +145,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="tgezf" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="projet" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/notebooks" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/notebooks/tgezf.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="train" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="projet" />
       <option name="ENV_FILES" value="" />
@@ -190,11 +191,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.tgezf" />
         <item itemvalue="Python.generate_notebook" />
         <item itemvalue="Python.predict" />
         <item itemvalue="Python.train" />
         <item itemvalue="Python.feature_pipeline" />
-        <item itemvalue="Python.evaluate" />
       </list>
     </recent_temporary>
   </component>
